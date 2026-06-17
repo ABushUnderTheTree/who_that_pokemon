@@ -1,5 +1,6 @@
 import express from "express";
 const app = express();
+const apiUrl = "https://pokeapi.co/"
 
 app.get("/", (req, res) => {
   res.send( 

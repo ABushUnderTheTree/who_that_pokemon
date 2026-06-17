@@ -7,8 +7,20 @@ const requestOptions = {
   
 };
 
-const response = await fetch(apiUrl + "/api/v2/pokemon/ditto", requestOptions);
+
+const response = await fetch(apiUrl + "/api/v2/pokemon/", requestOptions);
 console.log(await response.json());
+
+
+
+app.get("/new/:game_id", (req, res) => {
+  const gameId = Number(req.params.game_id);
+
+  res.json({
+    gameId
+  });
+});
+
 
 
 /*

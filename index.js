@@ -5,32 +5,9 @@ const apiUrl = "https://pokeapi.co/api/v2/pokemon/";
 //This port variable holds our server please do not touch
 const Port = 3000
 
-// Your ID generator function
-const game_id = (length) => {
-    let result = ' ';
-    const game_id_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const game_id_charactersLength = game_id_characters.length;
-    for ( let i = 0; i < length; i++ ) {
-        result += game_id_characters.charAt(Math.floor(Math.random() * game_id_charactersLength));
-    }
-    return result;
-}
-
-//this is test to see if connecting to the server
-app.get("/", async (req,res) => {
-  try {
-  const response = await fetch(apiUrl);
-  const data = await response.json();
-  res.send(data);
-  
-  } catch (error) {
-    res.status(500).send({ error: 'Failed to fetch data' });
-  }
+app.get("/", (req, res) => {
+  res.send("Who's That Pokémon?");
 });
-
-
-//This function has the variables awaiting
-//url holds the apiUrl variable and the params 
 const getApi = async() =>{
   // Wait for the API request to return a response
   const url = await fetch(apiUrl);
@@ -39,18 +16,51 @@ const getApi = async() =>{
   // Display the API data
   console.log(params)
 }
-
-// Send the string back to the browser
-app.get("/new", async (req, res) => { 
-  const newGameId = game_id(8); 
-    res.send(`Your new Game ID is: ${newGameId}`); 
-});
-
 getApi();
 
 app.listen(Port, () => {
   console.log("Server is running on port 3000");
 });
+
+
+
+
+
+
+
+
+// Your ID generator function
+// const game_id = (length) => {
+//     let result = ' ';
+//     const game_id_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+//     const game_id_charactersLength = game_id_characters.length;
+//     for ( let i = 0; i < length; i++ ) {
+//         result += game_id_characters.charAt(Math.floor(Math.random() * game_id_charactersLength));
+//     }
+//     return result;
+// }
+
+//this is test to see if connecting to the server
+// app.get("/", async (req,res) => {
+//   try {
+//   const response = await fetch(apiUrl);
+//   const data = await response.json();
+//   res.send(data);
+  
+//   } catch (error) {
+//     res.status(500).send({ error: 'Failed to fetch data' });
+//   }
+// });
+
+//This function has the variables awaiting
+//url holds the apiUrl variable and the params 
+
+// Send the string back to the browser
+// app.get("/new", async (req, res) => { 
+//   const newGameId = game_id(8); 
+//     res.send(`Your new Game ID is: ${newGameId}`); 
+// });
+
 
 
 // app.get("/new/:game_id", (req, res) => {

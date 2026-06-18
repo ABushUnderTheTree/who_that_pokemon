@@ -8,20 +8,33 @@ const Port = 3000
 app.get("/", (req, res) => {
   res.send("Who's That Pokémon?");
 });
-const getApi = async() =>{
-  // Wait for the API request to return a response
-  const url = await fetch(apiUrl);
-  // Wait for the JSON response to be converted into JavaScript data
-  const params = await url.json();
-  // Display the API data
-  console.log(params)
-}
-getApi();
 
-app.listen(Port, () => {
-  console.log("Server is running on port 3000");
+// Get a random Pokémon
+app.get("/pokemon", async (req, res) => {
+  try {
+    // Generate a random Pokémon ID
+    const randomPokemonId = Math.floor(Math.random() * 151) + 1;
+
+    // Fetch Pokémon data
+    const response = await fetch(`${apiUrl}${randomPokemonId}`);
+    const pokemon = await response.json();
+
+    // Send only the data we need
+    res.json({
+      id: pokemon.id,
+      name: pokemon.name,
+      image: pokemon.sprites.front_default,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to fetch Pokémon data",
+    });
+  }
 });
 
+app.listen(Port, () => {
+  console.log(`Server is running on port ${Port}`);
+});
 
 
 

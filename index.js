@@ -5,14 +5,16 @@ const apiUrl = "https://pokeapi.co/api/v2/pokemon/";
 //This port variable holds our server please do not touch
 const Port = 3000
 let localPokemon;
-
+let game_id;
+let num_of_hints = 5;
+let guess = true;
 
 app.get("/", (req, res) => {
   res.send("Who's That Pokémon?");
 });
 
 // Get a random Pokémon
-app.get("/pokemon", async (req, res) => {
+app.get("/new", async (req, res) => {
   try {
     // Generate a random Pokémon ID
     const randomPokemonId = Math.floor(Math.random() * 151) + 1;
@@ -21,49 +23,70 @@ app.get("/pokemon", async (req, res) => {
     const response = await fetch(`${apiUrl}${randomPokemonId}`);
     const pokemon = await response.json();
     localPokemon = pokemon;
-    // Send only the data we need
-    // res.json({
-    //   id: pokemon.id,
-    //   name: pokemon.name,
-    //   image: pokemon.sprites.front_default,
-    // });
+    // console.log(localPokemon)
+    const id = Math.floor(Math.random() * 1024) +1;
+    game_id = Buffer.from(String(id)).toString("base64");
+    const decoded = Number(Buffer.from(game_id, "base64").toString());
+
+    // num_of_hints = hints;
+    
+    res.json(
+      {game_id: game_id},
+      // num_of_hints
+      
+    )
+    
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       error: "Failed to fetch Pokémon data",
     });
   }
 });
 
-let game_id
 
-app.get("/new", (req, res) => {
-  
-  const id = 25;
-  game_id = Buffer.from(String(id)).toString("base64");
-  const decoded = Number(Buffer.from(game_id, "base64").toString());
+app.get("/hint/new/1", async(req,res)=>{
+  // res.json(`${localPokemon.color.name}`)
 
+  const firstMove = localPokemon.moves[0].move.name
   
   res.json({
-      game_id
-  
+      move: firstMove
     });
-  });
   
-  app.listen(Port, () => {
-    console.log("Server is running on port 3000");
+});
+
+app.get("/guess/new/:guess", (req, res) => {
+  
+  
+  
+  res.json({
+    game_id
+    
   });
-  //Your ID generator function
-  // const game_id = (length) => {
+});
+
+app.listen(Port, () => {
+  console.log("Server is running on port 3000");
+});
+
+
+
+
+
+//Your ID generator function
+// const game_id = (length) => {
   //     let result = ' ';
   //     const game_id_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   //     const game_id_charactersLength = game_id_characters.length;
   //     for ( let i = 0; i < length; i++ ) {
-  //         result += game_id_characters.charAt(Math.floor(Math.random() * game_id_charactersLength));
-  //     }
-  //     return result;
-  // }
-
-// app.listen(Port, () => {
+    //         result += game_id_characters.charAt(Math.floor(Math.random() * game_id_charactersLength));
+    //     }
+    //     return result;
+    // }
+    // Send only the data we need
+    
+    // app.listen(Port, () => {
 //   console.log(`Server is running on port ${Port}`);
 // });
 
